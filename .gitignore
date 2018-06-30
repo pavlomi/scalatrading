@@ -1,2 +1,9 @@
 *.class
 *.log
+
+/src/main/scala/pavlomi/scalatrading/main/
+/src/main/resources/data/*
+/target/*
+project/target/*
+project/project/target/*
+.idea/
