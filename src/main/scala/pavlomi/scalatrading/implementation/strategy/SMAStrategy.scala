@@ -5,10 +5,6 @@ import pavlomi.scalatrading.eventemitter.Strategy
 import pavlomi.scalatrading.indicator.SMA
 
 class SMAStrategy(private val intervalSMA: Int = 30) extends Strategy {
-  override protected def close(stockSymbol: StockSymbol, position: Position): Seq[SignalEvent] = Seq.empty[SignalEvent]
-
-  override protected def open(stockSymbol: StockSymbol): Seq[SignalEvent] = Seq.empty[SignalEvent]
-
   override def execute(event: DataEvent): Seq[SignalEvent] = {
     Strategy.addItem(event.candlestick)
     val (candlestick, positionOpt) = DataEvent.unapply(event).get
@@ -20,18 +16,17 @@ class SMAStrategy(private val intervalSMA: Int = 30) extends Strategy {
 
     if (previousSMA != 0) {
       val currentSMA = SMA.calculate(data, intervalSMA)
-
       (positionOpt, previousSMA < currentSMA) match {
         case (None, true) =>
-          Seq(SignalEvent(stockSymbol, PositionDirection.Buy, None, None))
+          Seq(SignalEvent(stockSymbol, PositionDirection.Buy, Some(candlestick.close), None))
         case (None, false) =>
-          Seq(SignalEvent(stockSymbol, PositionDirection.Sell, None, None))
+          Seq(SignalEvent(stockSymbol, PositionDirection.Sell, Some(candlestick.close), None))
         case (Some(p), true) if p.direction == PositionDirection.Buy =>
           Seq.empty[SignalEvent]
         case (Some(p), true) if p.direction == PositionDirection.Sell =>
-          Seq(SignalEvent(stockSymbol, PositionDirection.Buy, None, Some(p)))
+          Seq(SignalEvent(stockSymbol, PositionDirection.Buy, Some(candlestick.close), Some(p)))
         case (Some(p), false) if p.direction == PositionDirection.Buy =>
-          Seq(SignalEvent(stockSymbol, PositionDirection.Sell, None, Some(p)))
+          Seq(SignalEvent(stockSymbol, PositionDirection.Sell, Some(candlestick.close), Some(p)))
         case (Some(p), false) if p.direction == PositionDirection.Sell =>
           Seq.empty[SignalEvent]
       }
