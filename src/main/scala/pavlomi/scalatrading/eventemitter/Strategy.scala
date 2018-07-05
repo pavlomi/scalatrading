@@ -42,4 +42,6 @@ object Strategy {
 
   def get(stockSymbol: StockSymbol): Seq[Candlestick] =
     candlesticksMap.get(stockSymbol).getOrElse(Seq.empty[Candlestick])
+
+  def clear = candlesticksMap.clear()
 }

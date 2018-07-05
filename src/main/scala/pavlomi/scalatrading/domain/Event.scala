@@ -22,9 +22,9 @@ case class MarketEvent(
 ) extends Event
 
 case class SignalEvent(
-  price: Price,
   symbol: StockSymbol,
   direction: PositionDirection,
+  price: Option[Price],
   position: Option[Position]
 ) extends Event
 
