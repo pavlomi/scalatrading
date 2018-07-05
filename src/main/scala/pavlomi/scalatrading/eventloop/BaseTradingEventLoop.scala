@@ -1,13 +1,12 @@
-package pavlomi.scalatrading.implementation
+package pavlomi.scalatrading.eventloop
 
 import akka.Done
 import pavlomi.scalatrading.domain._
 import pavlomi.scalatrading.eventemitter.{MarketHandler, Portfolio, RiskManager, Strategy}
-import pavlomi.scalatrading.eventloop.{FifoEventLoop, TradingEventLoop}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TradingEventLoopImpl(
+class BaseTradingEventLoop(
   override val marketHandler: MarketHandler,
   override val strategy: Strategy,
   override val riskManager: RiskManager,
@@ -27,13 +26,15 @@ class TradingEventLoopImpl(
     run()
   }
 
-  override def eventProcessing(event: Event): Option[Event] =
+  override def eventProcessing(event: Event): Seq[Event] =
     event match {
-      case dataEvent: DataEvent         => strategy.execute(dataEvent)
-      case openSignalEvent: SignalEvent => riskManager.execute(openSignalEvent)
-      case marketEvent: MarketEvent     => marketHandler.execute(marketEvent)
-      case positionEvent: PositionEvent => portfolio.execute(positionEvent)
-      case EmptyEvent                   => None
+      case dataEvent: DataEvent                   => strategy.execute(dataEvent)
+      case signalEvent: SignalEvent               => riskManager.execute(signalEvent)
+      case marketEvent: MarketEvent               => marketHandler.execute(marketEvent)
+      case positionEvent: PositionEvent           => portfolio.execute(positionEvent)
+      case setStopLostEvent: SetStopLostEvent     => Seq.empty[Event]
+      case setTakeProfitEvent: SetTakeProfitEvent => Seq.empty[Event]
+      case EmptyEvent                             => Seq.empty[Event]
     }
 
 }

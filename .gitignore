@@ -1,5 +1,6 @@
 *.class
 *.log
+*.sc
 
 /src/main/scala/pavlomi/scalatrading/main/
 /src/main/resources/data/*

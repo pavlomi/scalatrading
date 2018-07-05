@@ -5,10 +5,10 @@ import pavlomi.scalatrading.domain._
 import scala.collection.mutable.Map
 
 abstract class Strategy extends EventEmitter[DataEvent, SignalEvent] {
-  protected def open(stockSymbol: StockSymbol): Option[SignalEvent]
-  protected def close(stockSymbol: StockSymbol, position: Position): Option[SignalEvent]
+  protected def open(stockSymbol: StockSymbol): Seq[SignalEvent]
+  protected def close(stockSymbol: StockSymbol, position: Position): Seq[SignalEvent]
 
-  override def execute(event: DataEvent): Option[SignalEvent] = {
+  override def execute(event: DataEvent): Seq[SignalEvent] = {
     Strategy.addItem(event.candlestick)
     val stockSymbol = event.candlestick.symbol
 
@@ -31,6 +31,7 @@ object Strategy {
       .getOrElse(Seq(candlestick))
 
     candlesticksMap += (stockSymbol -> candlesticks)
+
   }
 
   def getLast(stockSymbol: StockSymbol): Option[Candlestick] =

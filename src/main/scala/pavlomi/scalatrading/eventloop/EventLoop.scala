@@ -24,5 +24,5 @@ abstract class EventLoop(implicit ec: ExecutionContext) {
     Done
   }
 
-  protected def eventProcessing(event: Event): Option[Event]
+  protected def eventProcessing(event: Event): Seq[Event]
 }
