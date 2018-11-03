@@ -9,8 +9,9 @@ import pavlomi.scalatrading.domain.{Candlestick, StockSymbol}
 
 import scala.concurrent.Future
 
-class CsvStreamDataProvider(stockSymbol: StockSymbol, dataFormatter: DataFormatter[Map[String, String]])(implicit mac: Materializer)
-    extends DataProvider[Map[String, String]](stockSymbol) {
+class CsvStreamDataProvider(val stockSymbol: StockSymbol, dataFormatter: DataFormatter[Map[String, String]])(implicit mac: Materializer)
+    extends DataProvider[Map[String, String]] {
+
   override def execute(f: Candlestick => Future[Done]): Future[Done] = {
     val file = getClass.getClassLoader
       .getResource(CsvStreamDataProvider.PATH_TO_FOLDER + "/" + stockSymbol.value + ".csv")

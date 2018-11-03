@@ -1,12 +1,12 @@
 package pavlomi.scalatrading.eventemitter
+import pavlomi.scalatrading.domain.{Candlestick, Event, StockSymbol}
 
-import pavlomi.scalatrading.domain._
-
-import scala.collection.mutable.Map
-
-abstract class Strategy extends EventEmitter[DataEvent, SignalEvent]
+abstract class Strategy[IN <: Event, OUT <: Event] extends EventEmitter[IN, OUT]
 
 object Strategy {
+
+  import scala.collection.mutable.Map
+
   private val candlesticksMap: Map[StockSymbol, Seq[Candlestick]] =
     Map.empty[StockSymbol, Seq[Candlestick]]
 

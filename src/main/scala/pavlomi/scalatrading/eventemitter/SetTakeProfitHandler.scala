@@ -1,5 +1,5 @@
 package pavlomi.scalatrading.eventemitter
 
-import pavlomi.scalatrading.domain.{PositionEvent, SetTakeProfitEvent}
+import pavlomi.scalatrading.domain.Event
 
-abstract class SetTakeProfitHandler extends EventEmitter[PositionEvent, SetTakeProfitEvent]
+abstract class SetTakeProfitHandler[IN <: Event, OUT <: Event] extends EventEmitter[IN, OUT]

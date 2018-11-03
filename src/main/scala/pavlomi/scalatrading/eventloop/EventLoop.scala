@@ -16,13 +16,12 @@ abstract class EventLoop(implicit ec: ExecutionContext) {
 
   protected def isNotEmpty: Boolean = !isEmpty
 
-  protected def run(): Future[Done] = Future {
+  protected def run(): Unit =
     while (isNotEmpty) {
-      val event = getNextEvent()
-      eventProcessing(event).map(addEvent)
+      val event    = getNextEvent()
+      val newEvent = eventProcessing(event)
+      addEvent(newEvent)
     }
-    Done
-  }
 
-  protected def eventProcessing(event: Event): Seq[Event]
+  protected def eventProcessing(event: Event): Event
 }

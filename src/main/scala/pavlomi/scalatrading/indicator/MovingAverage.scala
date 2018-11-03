@@ -5,23 +5,36 @@ import pavlomi.scalatrading.domain.Candlestick
 import scala.annotation.tailrec
 
 trait MovingAverage {
-  def calculate(items: Seq[Candlestick], interval: Int): BigDecimal
+  def items: Seq[Candlestick]
+  def interval: Int
+
+  /**
+   * Return some value otherwise -1.
+   */
+  def calculate: BigDecimal
+
+  def f: Candlestick => BigDecimal = item => item.close.value
+
+  def prev: SMA                           = SMA(items.tail, interval)
+  def next(candlestick: Candlestick): SMA = SMA(candlestick +: items, interval)
 }
 
-object SMA extends MovingAverage {
-  override def calculate(items: Seq[Candlestick], interval: Int): BigDecimal = {
+case class SMA(items: Seq[Candlestick], interval: Int) extends MovingAverage {
+  lazy val calculate: BigDecimal = {
     @tailrec
     def loop(i: Int, items: Seq[Candlestick], acc: BigDecimal): BigDecimal =
       if (i == 0) acc
       else if (items.isEmpty) BigDecimal(0)
-      else loop(i - 1, items.tail, acc + items.head.close.value)
+      else loop(i - 1, items.tail, acc + f(items.head))
 
-    val sum = loop(interval, items, 0)
+    if (items.size >= interval) {
+      val sum = loop(interval, items, 0)
 
-    if (sum > 0) sum / interval else sum
+      if (sum > 0) sum / interval else sum
+    } else -1
   }
 }
 
-object EMA extends MovingAverage {
-  override def calculate(items: Seq[Candlestick], interval: Int): BigDecimal = ???
+case class EMA(items: Seq[Candlestick], interval: Int) extends MovingAverage {
+  override def calculate: BigDecimal = ???
 }

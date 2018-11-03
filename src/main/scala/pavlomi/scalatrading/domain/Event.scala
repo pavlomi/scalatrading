@@ -2,33 +2,36 @@ package pavlomi.scalatrading.domain
 
 sealed trait Event
 
-case class PositionEvent(
-  price: Price,
-  symbol: StockSymbol,
-  direction: PositionDirection,
-  position: Option[Position]
-) extends Event
-
-case class DataEvent(
-  candlestick: Candlestick,
-  position: Option[Position]
-) extends Event
-
-case class MarketEvent(
-  price: Price,
-  symbol: StockSymbol,
-  direction: PositionDirection,
-  position: Option[Position]
-) extends Event
-
-case class SignalEvent(
-  symbol: StockSymbol,
-  direction: PositionDirection,
-  price: Option[Price],
-  position: Option[Position]
-) extends Event
-
-case class SetStopLostEvent(position: Position)   extends Event
-case class SetTakeProfitEvent(position: Position) extends Event
-
 object EmptyEvent extends Event
+
+trait PositionEvent extends Event {
+  def price: Price
+  def symbol: StockSymbol
+  def value: Value
+  def direction: PositionDirection
+}
+
+trait DataEvent extends Event {
+  def candlestick: Candlestick
+}
+
+trait OrderEvent extends Event {
+  def price: Price
+  def symbol: StockSymbol
+  def direction: PositionDirection
+  def value: Value
+}
+
+trait SignalEvent extends Event {
+  def symbol: StockSymbol
+  def direction: PositionDirection
+  def price: Price
+}
+
+trait StopLostEvent extends Event {
+  def position: Position
+}
+
+trait TakeProfitEvent extends Event {
+  def position: Position
+}

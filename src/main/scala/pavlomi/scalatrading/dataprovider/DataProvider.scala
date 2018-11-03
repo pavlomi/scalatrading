@@ -5,7 +5,9 @@ import pavlomi.scalatrading.domain.{Candlestick, StockSymbol}
 
 import scala.concurrent.Future
 
-abstract class DataProvider[I](stockSymbol: StockSymbol) {
+abstract class DataProvider[I] {
+  def stockSymbol: StockSymbol
+
   def execute(f: Candlestick => Future[Done]): Future[Done]
 }
 
