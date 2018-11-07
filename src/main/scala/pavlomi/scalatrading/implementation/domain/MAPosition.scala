@@ -1,23 +1,23 @@
 package pavlomi.scalatrading.implementation.domain
 import pavlomi.scalatrading.domain._
 
-case class PositionImpl(
+case class MAPosition(
   val uuid: PositionId,
   val open: Price,
   val close: Option[Price],
   val value: Value,
   val symbol: StockSymbol,
   val direction: PositionDirection,
-  val subPosition: Seq[Position] = Seq.empty[Position]
+  val subPosition: Seq[Position] = Seq.empty[MAPosition]
 ) extends Position
 
-case class MADataEvent(val candlestick: Candlestick, position: Option[Position] = None) extends DataEvent
+case class MADataEvent(val candlestick: Candlestick, position: Option[MAPosition] = None) extends DataEvent
 
 case class MASignalEvent(
   val symbol: StockSymbol,
   val direction: PositionDirection,
   val price: Price,
-  position: Option[Position] = None
+  position: Option[MAPosition] = None
 ) extends SignalEvent
 
 case class MAOrderEvent(
@@ -25,7 +25,7 @@ case class MAOrderEvent(
   val symbol: StockSymbol,
   val direction: PositionDirection,
   val value: Value,
-  position: Option[Position] = None
+  position: Option[MAPosition] = None
 ) extends OrderEvent
 
 case class MAPositionEvent(
@@ -33,5 +33,5 @@ case class MAPositionEvent(
   val symbol: StockSymbol,
   val direction: PositionDirection,
   val value: Value,
-  position: Option[Position] = None
+  position: Option[MAPosition] = None
 ) extends PositionEvent
