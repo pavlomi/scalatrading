@@ -1,6 +1,10 @@
 package pavlomi.scalatrading.domain
 
-sealed trait Event
+sealed trait Event { self =>
+  def +(e: Event): CombinedEvent = CombinedEvent(self, e)
+}
+
+case class CombinedEvent(first: Event, second: Event) extends Event
 
 object EmptyEvent extends Event
 
@@ -12,7 +16,7 @@ trait PositionEvent extends Event {
 }
 
 trait DataEvent extends Event {
-  def candlestick: Candlestick
+  def candlestick: CandlestickMarker
 }
 
 trait OrderEvent extends Event {

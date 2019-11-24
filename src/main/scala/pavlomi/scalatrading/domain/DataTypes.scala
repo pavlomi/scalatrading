@@ -17,6 +17,8 @@ sealed trait PositionDirection extends EnumEntry { self =>
   def isLong: Boolean = self == PositionDirection.Buy
 
   def isShort: Boolean = !isLong
+
+  def revert: PositionDirection = if (isLong) PositionDirection.Sell else PositionDirection.Buy
 }
 object PositionDirection extends Enum[PositionDirection] {
   case object Buy  extends PositionDirection

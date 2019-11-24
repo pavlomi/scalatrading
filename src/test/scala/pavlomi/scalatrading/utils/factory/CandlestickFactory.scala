@@ -1,7 +1,7 @@
 package pavlomi.scalatrading.utils.factory
 import java.time.Instant
 
-import pavlomi.scalatrading.domain.{CandlestickImpl, Price, StockSymbol, Value}
+import pavlomi.scalatrading.domain._
 
 import scala.util.Random
 
@@ -16,7 +16,7 @@ object CandlestickFactory {
     stockSymbol: StockSymbol = StockSymbol("IBM"),
     value: BigDecimal = random.nextDouble,
     instant: Instant = Instant.now
-  ): CandlestickImpl = CandlestickImpl(
+  ): Candlestick = Candlestick(
     stockSymbol,
     Price(open),
     Price(close),

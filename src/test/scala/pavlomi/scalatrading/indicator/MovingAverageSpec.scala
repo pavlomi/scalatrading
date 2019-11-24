@@ -15,9 +15,9 @@ class MovingAverageSpec extends FlatSpec {
     val slist = Seq(s1, s2, s3)
     val sma   = slist.map(_.close.value).sum / slist.size
 
-    assert(SMA.calculate(slist, 3) == sma)
+    assert(SMA(slist, 3).calculate == sma)
 
-    assert(SMA.calculate(slist, 4) == 0)
+    assert(SMA(slist, 4).calculate == -1)
   }
 
 }

@@ -11,7 +11,7 @@ class StrategySpec extends FlatSpec {
 
   val random = new Random()
 
-  "getLast" must "must return the last added element" in {
+  "getLast" must "return the last added element" in {
     val symbol      = random.nextString(3).toUpperCase
     val stockSymbol = StockSymbol(symbol)
 
@@ -22,7 +22,7 @@ class StrategySpec extends FlatSpec {
     assert(Strategy.getLast(stockSymbol) != Some(cs1))
   }
 
-  "get" must "must return the list of candlestick object" in {
+  "get" must "return the list of candlestick object" in {
     val symbol      = random.nextString(3).toUpperCase
     val stockSymbol = StockSymbol(symbol)
 
@@ -33,7 +33,7 @@ class StrategySpec extends FlatSpec {
     assert(Strategy.get(stockSymbol) != Seq(cs3, cs1))
   }
 
-  "get" must "must return a empty list" in {
+  "get" must "return a empty list" in {
     val wrongSymbol      = random.nextString(10).toUpperCase
     val symbol           = random.nextString(10).toUpperCase
     val stockSymbol      = StockSymbol(symbol)

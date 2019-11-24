@@ -1,8 +1,10 @@
-package pavlomi.scalatrading.implementation.eventemitter
+package pavlomi.scalatrading.implementation.mastrategy.eventemitter
 
 import pavlomi.scalatrading.domain.{Position, PositionId, StockSymbol}
 import pavlomi.scalatrading.eventemitter.PortfolioRepository
-import pavlomi.scalatrading.implementation.domain.MAPosition
+import pavlomi.scalatrading.implementation.mastrategy.domain.MAPosition
+
+import scala.collection.mutable.Map
 
 class MAPortfolioRepository extends PortfolioRepository {
 
@@ -11,15 +13,15 @@ class MAPortfolioRepository extends PortfolioRepository {
 
   override def insert(position: Position): Unit =
     position match {
-      case position: MAPosition => store + (position.uuid -> position)
+      case position: MAPosition => store += (position.uuid -> position)
       case _                    => throw new IllegalArgumentException
     }
 
-  override def update(positionId: PositionId, position: Position): Unit = ???
-//    position match {
-//      case position: MAPosition => store(positionId) = position
-//      case _                    => throw new IllegalArgumentException
-//    }
+  override def update(positionId: PositionId, position: Position): Unit =
+    position match {
+      case position: MAPosition => store(positionId) = position
+      case _                    => throw new IllegalArgumentException
+    }
 
   def findOpenByStockSymbol(stockSymbol: StockSymbol): Option[MAPosition] =
     store
@@ -28,5 +30,5 @@ class MAPortfolioRepository extends PortfolioRepository {
       }
       .map(_._2)
 
-  private val store = Map.empty[PositionId, MAPosition]
+  val store = Map.empty[PositionId, MAPosition]
 }

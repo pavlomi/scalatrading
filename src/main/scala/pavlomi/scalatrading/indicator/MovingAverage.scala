@@ -20,6 +20,9 @@ trait MovingAverage {
 }
 
 case class SMA(items: Seq[Candlestick], interval: Int) extends MovingAverage {
+  require(interval > 0)
+  require(items.nonEmpty)
+
   lazy val calculate: BigDecimal = {
     @tailrec
     def loop(i: Int, items: Seq[Candlestick], acc: BigDecimal): BigDecimal =
@@ -36,5 +39,5 @@ case class SMA(items: Seq[Candlestick], interval: Int) extends MovingAverage {
 }
 
 case class EMA(items: Seq[Candlestick], interval: Int) extends MovingAverage {
-  override def calculate: BigDecimal = ???
+  lazy val calculate: BigDecimal = ???
 }

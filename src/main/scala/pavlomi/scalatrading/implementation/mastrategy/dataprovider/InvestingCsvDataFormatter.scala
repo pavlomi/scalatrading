@@ -1,4 +1,4 @@
-package pavlomi.scalatrading.implementation.dataprovider
+package pavlomi.scalatrading.implementation.mastrategy.dataprovider
 
 import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.ChronoField
@@ -10,13 +10,13 @@ import pavlomi.scalatrading.domain._
 class InvestingCsvDataFormatter extends DataFormatter[Map[String, String]] {
 
   val dateTimeFormatterBuilder = new DateTimeFormatterBuilder()
-    .appendPattern("dd.MM.yyyy")
+    .appendPattern("dd-MM-yyyy")
     .parseDefaulting(ChronoField.NANO_OF_DAY, 0)
     .toFormatter
 
   override def execute(data: Map[String, String], stockSymbol: StockSymbol): Candlestick = {
-    val instant: Instant = LocalDateTime.parse("04.05.2018", dateTimeFormatterBuilder).toInstant(ZoneOffset.UTC)
-    CandlestickImpl(
+    val instant: Instant = LocalDateTime.parse(data("Дата"), dateTimeFormatterBuilder).toInstant(ZoneOffset.UTC)
+    Candlestick(
       stockSymbol,
       Price(BigDecimal(data("Откр.").replaceAll(",", "."))),
       Price(BigDecimal(data("Цена").replaceAll(",", "."))),

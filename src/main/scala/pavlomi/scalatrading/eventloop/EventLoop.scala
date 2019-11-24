@@ -1,12 +1,9 @@
 package pavlomi.scalatrading.eventemitter
 
-import akka.Done
-import pavlomi.scalatrading.domain.{DataEvent, Event}
+import pavlomi.scalatrading.domain.Event
 
-import scala.concurrent.{ExecutionContext, Future}
-
-abstract class EventLoop(implicit ec: ExecutionContext) {
-  def execute(dataEvent: DataEvent): Future[Done]
+abstract class EventLoop {
+  def execute(dataEvent: Event): Unit
 
   protected def addEvent(event: Event): Unit
 
