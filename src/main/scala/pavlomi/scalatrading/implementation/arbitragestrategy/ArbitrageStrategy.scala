@@ -132,11 +132,7 @@ class ArbitrageStrategy(implicit as: ActorSystem, mat: ActorMaterializer, ex: Ex
               }
             case Left(value) => loop(None, partialPositions, retryCounter + 1)
           }
-        case Some(orderNumber) =>
-          poloniexTradingApi.returnOrderTrades(orderNumber).map {
-            case Right(value) => ???
-            case Left(value) => ???
-          }
+        case Some(orderNumber) => ???
 
       }
 

@@ -1,4 +1,5 @@
 name := "scalatrading"
+organization := "pavlomi"
 version := "1.0.0"
 scalaVersion := "2.12.1"
 scalacOptions := Seq("-target:jvm-1.8", "-unchecked", "-deprecation", "-feature", "-encoding", "utf8")
@@ -40,6 +41,9 @@ libraryDependencies ++= {
     "org.scalatest" %% "scalatest"                   % scalaTestV % "test",
     "org.scalamock" %% "scalamock-scalatest-support" % scalaMockV % "test"
   )
+  lazy val pavlomi = Seq(
+    "pavlomi" %% "poloniex" % "0.0.1"
+  )
 
   lazy val others = Seq(
     "com.beachape"         %% "enumeratum"      % enumeratumV,
@@ -48,5 +52,5 @@ libraryDependencies ++= {
     "com.github.t3hnar"    %% "scala-bcrypt"    % bcryptV
   )
 
-  akkaBase ++ akkaHttp ++ macwire ++ test ++ others
+  akkaBase ++ akkaHttp ++ macwire ++ test ++ others ++ pavlomi
 }
